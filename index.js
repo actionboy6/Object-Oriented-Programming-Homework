@@ -1,21 +1,25 @@
 //running v11.17.0 of VSCode. Unable to run index.js via node.js
-const inquirer = require('inquirer')
-const fs = require('fs')
-const generate = require('generate.js')
-const { createDecipheriv } = require('crypto')
+const inquirer = require('inquirer');
+const fs = require('fs');
+const buildHTML = require('./generate')
+const { errorMonitor } = require('events');
+const jest = require('jest')
+
+
+const test = []
 
 inquirer
-    .createPromptModule([
+    .prompt([
         {
             type: "input",
             name: "name",
             message: "What is your name?",
         },
-        {
-            type: "input",
-            name: "position",
-            message: "What is your current role in the company?",
-        },
+        // {
+        //     type: "input",
+        //     name: "position",
+        //     message: "What is your current role in the company?",
+        // },
         {
             type: "input",
             name: "id",
@@ -29,33 +33,42 @@ inquirer
         },
         {
             type: "list",
-            name: "office",
-            message: "Do you have an office?",
-            choices: "Yes",
-            choices: "No",
-            //if yes, input office number
+            name: "role",
+            message: "Are you a ",
+           choices: [
+            "Manager",
+            "Engineer",
+            "Student",
+           ]
         },
         {
-            input: "list",
+            input: "input",
             name: "Github",
-            message: "Do you have a Github account?",
-            choices: "Yes",
-            choices: "No",
-            //if yes, input Github account
+            message: "What is your Github?",
         },
-        {
-          type: "list",
-          name: "student",
-          message: "Are you a student?",
-          choices: "Yes",
-          choices: "No",
-          //if yes, input school user is attending.
-        },
+        // {
+        //   type: "list",
+        //   name: "student",
+        //   message: "Are you a student?",
+        //   choices: [
+        //     "Yes",
+        //     "No",
+        //   ]
+        //   //if yes, input school user is attending.
+        // },
     ])
-    .then((answers) => {
-        fs.writeFile("index.html", "style.css" , generate(answers) , (err) => {
-            if(err) throw err;
-            console.log('HTML has been created')
-            console.log('style.css has been created')
+
+        .then((answers) => {
+            
+            //  fs.writeFileSync ("index.html", JSON.stringify(buildHTML(answers) ))
+           //deleted render(answers) and replaced with JSON.stringify 
+            
         })
-    })
+        .catch((error) => {
+            if (error.isTtyError) {
+                console.log("console enviornment not supported")
+            } else {
+                console.log(error)
+            }
+            
+        })
