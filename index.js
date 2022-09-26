@@ -15,19 +15,13 @@ const buildHTML = require('./src/generate')
 
 const teamMembers = []
 function menu () {
-    function createManager () {
 inquirer
     .prompt([
         {
             type: "input",
-            name: "ManagerName",
+            name: "managerName",
             message: "What is your manager name?",
         },
-        // {
-        //     type: "input",
-        //     name: "position",
-        //     message: "What is your current role in the company?",
-        // },
         {
             type: "input",
             name: "managerId",
@@ -44,32 +38,6 @@ inquirer
             name: "managerOffice",
             message: "What is your office number?"
         }
-
-        // {
-        //     type: "list",
-        //     name: "role",
-        //     message: "Are you a ",
-        //    choices: [
-        //     "Manager",
-        //     "Engineer",
-        //     "Student",
-        //    ]
-        // },
-        // {
-        //     input: "input",
-        //     name: "Github",
-        //     message: "What is your Github?",
-        // },
-        // // {
-        //   type: "list",
-        //   name: "student",
-        //   message: "Are you a student?",
-        //   choices: [
-        //     "Yes",
-        //     "No",
-        //   ]
-        //   //if yes, input school user is attending.
-        // },
     ])
 
         .then((answers) => {
@@ -90,7 +58,7 @@ inquirer
             }
           
         }) 
-    };
+
         function createTeam () {
             inquirer.prompt ([
                 {
@@ -112,18 +80,13 @@ inquirer
             })
         }
         function addEngineer () {
-            inquirer
-    .prompt([
+             inquirer
+            .prompt([
         {
             type: "input",
-            name: "EngineerName",
+            name: "engineerName",
             message: "What is your engineer name?",
         },
-        // {
-        //     type: "input",
-        //     name: "position",
-        //     message: "What is your current role in the company?",
-        // },
         {
             type: "input",
             name: "engineerId",
@@ -141,59 +104,76 @@ inquirer
             message: "What is your Github?"
         }
 
-        // {
-        //     type: "list",
-        //     name: "role",
-        //     message: "Are you a ",
-        //    choices: [
-        //     "Manager",
-        //     "Engineer",
-        //     "Student",
-        //    ]
-        // },
-        // {
-        //     input: "input",
-        //     name: "Github",
-        //     message: "What is your Github?",
-        // },
-        // // {
-        //   type: "list",
-        //   name: "student",
-        //   message: "Are you a student?",
-        //   choices: [
-        //     "Yes",
-        //     "No",
-        //   ]
-        //   //if yes, input school user is attending.
-        // },
     ])
-
-        .then((answers) => {
+    .then((answers) => {
             
-            //  fs.writeFileSync ("index.html", JSON.stringify(buildHTML(answers) ))
-           //deleted render(answers) and replaced with JSON.stringify 
-            const engineer = new Engineer(
-                answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub
-            );
-                teamMembers.push (engineer);
-                createTeam ();
-        })
-        .catch((error) => {
-            if (error.isTtyError) {
-                console.log("console enviornment not supported")
-            } else {
-                console.log(error)
-            }
-          
-        }) 
-        };
-        function addIntern () {
-            console.log('intern')
+        //  fs.writeFileSync ("index.html", JSON.stringify(buildHTML(answers) ))
+       //deleted render(answers) and replaced with JSON.stringify 
+        const engineer = new Engineer(
+            answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub
+        );
+            teamMembers.push (engineer);
+            createTeam ();
+    })
+    .catch((error) => {
+        if (error.isTtyError) {
+            console.log("console enviornment not supported")
+        } else {
+            console.log(error)
         }
+    })
+}
+        
         function teamBuild () {
             fs.writeFileSync (distFile, buildHTML (teamMembers), 'utf-8')
         }
-        
+
+    function addIntern () {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "internName",
+                message: "Intern, please input your name",
+            },
+            {
+                type: "input",
+                name: "internId",
+                message: "Please input your intern ID",
+                // Unable to validate employee ID's due to file not existing.
+            },
+            {
+                type: "input",
+                name: "internEmail",
+                message: "What is your work email?"
+            },
+            {
+                type: "input",
+                name: "college",
+                message: "What college/university are you enrolled/graduated from?"
+            }
+        ])
+    
+            .then((answers) => {
+                
+                //  fs.writeFileSync ("index.html", JSON.stringify(buildHTML(answers) ))
+               //deleted render(answers) and replaced with JSON.stringify 
+                const intern = new Interim(
+                    answers.internName, answers.internId, answers.internEmail, answers.college
+                );
+                    teamMembers.push (intern);
+                    createTeam ();
+            })
+            .catch((error) => {
+                if (error.isTtyError) {
+                    console.log("console enviornment not supported")
+                } else {
+                    console.log(error)
+                }
+              
+            })
+        console.log('intern')
+    }
+}
 
 
 
@@ -205,7 +185,7 @@ inquirer
 
 
 
-createManager ();
-    };
+    // createManager ();
+    
 
     menu();
